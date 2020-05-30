@@ -51,3 +51,37 @@ const e1: ElevatedEmployee = {
   privileges: ['create-server'],
   startDate: new Date()
 };
+
+class Car {
+  drive() {
+    console.log("Driving car...");
+  }
+}
+
+class Truck {
+  private cargoWeight: number = 0;
+
+  drive() {
+    console.log("Driving truck...");
+  }
+
+  loadCargo(amount: number) {
+    this.cargoWeight += amount;
+    console.log(`Loaded a total of ${this.cargoWeight}kg`);
+  }
+}
+
+type Vehicle = Car | Truck;
+
+function useVehicle(vehicle: Vehicle) {
+  vehicle.drive();
+
+  if(vehicle instanceof Truck) {
+    vehicle.loadCargo(1000);
+  }
+}
+
+let v1 = new Car();
+let v2 = new Truck();
+useVehicle(v1);
+useVehicle(v2);

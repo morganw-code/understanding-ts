@@ -1,4 +1,5 @@
 # Understanding TypeScript Notes
+
 Notes taken from Maximilian Schwarzmüller's course with additions. (WIP)
 
 ## 2. TypeScript Basics & Basic Types
@@ -316,7 +317,7 @@ class Book {
 class Book {
   private employees: string[] = [];
   public name: string;
-  private age: number;
+  protected age: number;
 }
 ```
 
@@ -438,7 +439,7 @@ class Note implements IDrawable {
 
 If an interface extends another, anything that implements the interface must implement all the requirements of both interfaces.
 
-``` TypeScript
+```TypeScript
   interface INamed {
     readonly name: string;
   }
@@ -457,7 +458,7 @@ If an interface extends another, anything that implements the interface must imp
 
 ### Optional property in interface
 
-``` TypeScript
+```TypeScript
   interface SomeInterface {
     readonly name: string;
     // question mark marks outputName as optional
@@ -473,13 +474,13 @@ If an interface extends another, anything that implements the interface must imp
   }
 ```
 
-### 6. Advanced Types
+## 6. Advanced Types
 
-#### Intersection Types
+### Intersection Types
 
 Intersection types allow us to combine other types.
 
-``` TypeScript
+```TypeScript
   type Admin = {
     name: string;
     privileges: string[];
@@ -499,4 +500,104 @@ Intersection types allow us to combine other types.
     privileges: ['create-server'],
     startDate: new Date()
   };
+
+  type UnknownEmployee = Employee | Admin;
+
+  function printEmployeeInformation(emp: UnknownEmployee) {
+    console.log('Name: ' + emp.name);
+
+    // checks if 'privileges' is a property of the object
+    if('privileges' in emp) {
+      console.log('Privileges :' + emp.privileges);
+    }
+
+    if('startDate' in emp) {
+      console.log('Start Date: ' + emp.startDate);
+    }
+  }
+```
+
+using instanceof instead
+
+```TypeScript
+class Car {
+  drive() {
+    console.log("Driving car...");
+  }
+}
+
+class Truck {
+  private cargoWeight: number = 0;
+
+  drive() {
+    console.log("Driving truck...");
+  }
+
+  loadCargo(amount: number) {
+    this.cargoWeight += amount;
+    console.log(`Loaded a total of ${this.cargoWeight}kg`);
+  }
+}
+
+type Vehicle = Car | Truck;
+
+function useVehicle(vehicle: Vehicle) {
+  vehicle.drive();
+
+  if(vehicle instanceof Truck) {
+    vehicle.loadCargo(1000);
+  }
+}
+
+let v1 = new Car();
+let v2 = new Truck();
+useVehicle(v1);
+useVehicle(v2);
+```
+
+### Discriminated Unions
+
+``` TypeScript
+
+interface Bird {
+  type: 'bird';
+  flyingSpeed: number;
+}
+
+interface Horse {
+  type: 'horse';
+  runningSpeed: horse;
+}
+
+type Animal = Bird | Horse;
+
+function moveAnimal(animal: Animal) {
+  let speed: number;
+  switch(animal.type) {
+    case 'bird':
+      speed = animal.flyingSpeed;
+      break;
+    case 'horse':
+      speed = animal.runningSpeed;
+      break;
+  }
+
+  console.log('Moving speed at: ' + speed);
+}
+```
+
+### Type Casting
+
+When targeting elements, it is not always guaranteed that the element exists in the HTML document and TypeScript has no way of knowing either. Since the element could technically be null, appending '!' will override this safety. Still, without any type-casting, TypeScript does not know what type the element is, thus, you cannot call a method like `.value` on the default HTMLElement type. To get around this you need to be explicit about what type the variable is.
+
+``` TypeScript
+  // is explicit
+  const someElement = document.getElementById('user-input')! as HTMLInputElement;
+  // or (but <SomeType> clashes with ReactJS, so the first option is preferred)
+  // const someElement = <HTMLInputElement>document.getElementById('user-input')!;
+  someElement.value = 'Hi'; // Works
+
+  // is not
+  const someElement = document.getElementById('user-input')!;
+  someElement.value = 'Hi'; // Error: Property 'value' does not exist on the type 'HTMLElement'
 ```
