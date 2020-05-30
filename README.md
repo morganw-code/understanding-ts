@@ -1,30 +1,30 @@
-# Understanding TypeScript Notes
+# Understanding TypeScript Notes - TypeScript in one hit!
 
 ## 2. TypeScript Basics & Basic Types
 
 ### Types
 
-number  eg. 1, 5.3, -10 (no differentiation between int and float)
+number eg. 1, 5.3, -10 (no differentiation between int and float)
 
-string  eg. 'Hi', "Hi", `Hi` (all text values)
+string eg. 'Hi', "Hi", `Hi` (all text values)
 
 boolean eg. true, false (only true/false)
 
-object  eg. {age: 30}
+object eg. {age: 30}
 
-Array   eg. [1, 2, 3] (Any JavaScript array, and can be flexible or strict)
+Array eg. [1, 2, 3] (Any JavaScript array, and can be flexible or strict)
 
-Tuple   eg. [1, 2] (Fixed length, fixed type)
+Tuple eg. [1, 2] (Fixed length, fixed type)
 
-Union   eg. number | string (Union type that can hold number or string in that example)
+Union eg. number | string (Union type that can hold number or string in that example)
 
-Enum    eg. enum { NEW = 'ADMIN', OLD = 100 } (Used for human-readable labels)
+Enum eg. enum { NEW = 'ADMIN', OLD = 100 } (Used for human-readable labels)
 
-Any     eg. any[] (yes any)
+Any eg. any[] (yes any)
 
 ### Defining object types
 
-``` TypeScript
+```TypeScript
 const person: {
   name: string;
   age: number;
@@ -33,6 +33,7 @@ const person: {
   age: 50
 };
 ```
+
 ### Array types
 
 any[] (any literally referring to any datatype, not the 'any' ts datatype)
@@ -45,7 +46,7 @@ Used when defining that a variable or param COULD hold one of any specified valu
 
 eg.
 
-``` TypeScript
+```TypeScript
 function print(input1: number | string) {
   console.log(input1);
 }
@@ -55,7 +56,7 @@ function print(input1: number | string) {
 
 eg.
 
-``` TypeScript
+```TypeScript
   type Combinable = number | string;
   //
   type ConversionDescriptor = 'as-number' | 'as-text';
@@ -63,7 +64,7 @@ eg.
 
 then could be used as for example
 
-``` TypeScript
+```TypeScript
 function print(input1: Combinable) { console.log(input1); }
 //
 function something(descriptor: ConversionDescriptor) {
@@ -79,7 +80,7 @@ function something(descriptor: ConversionDescriptor) {
 
 eg.
 
-``` TypeScript
+```TypeScript
 function add(n1: number, n2: number): number {
   return n1 + n2;
 }
@@ -93,11 +94,11 @@ function add(n1: number, n2: number): void {
 
 ### Functions as types
 
-``` TypeScript
+```TypeScript
   function someFunction: Function;
 ```
 
-``` TypeScript
+```TypeScript
   // defining the prototype of the function variable
   let someFunction: (a: number, b: number) => number;
 
@@ -110,7 +111,7 @@ function add(n1: number, n2: number): void {
   function b(n1: number): string {
     return +n1;
   }
-  
+
   // valid
   someFunction = a;
   // invalid
@@ -121,7 +122,7 @@ english: someFunction takes two number params and returns a number.
 
 ### Callbacks
 
-``` TypeScript
+```TypeScript   ----------------------------------------------------------------------------
 function addAndHandle(n1: number, n2: number, cb: (num: number) => void) {
   const result = n1 + n2;
   cb(result);
@@ -136,7 +137,7 @@ addAndHandle(1, 2, (result: number) => {
 
 Unknown is more restrictive than any
 
-``` TypeScript
+```TypeScript
   // will not work
   let userInput: unknown;
   let userName: string;
@@ -156,7 +157,7 @@ utility example:
 
 this function never produces a value because 'throw' breaks the execution for this function, thus, it 'never' returns a value. (not even undefined/void)
 
-``` TypeScript
+```TypeScript
 function generateError(message: string, code: number): never {
   throw { message: message, errorCode: code };
 }
@@ -189,7 +190,7 @@ then when it is initalized
 (ts project must be initialized)
 `tsconfig.json`
 
-``` json
+```json
   // before the closing brace (example)
   // ...
   // },
@@ -204,9 +205,9 @@ then when it is initalized
   //}
 ```
 
-## Compilation Target
+## Compiler Options
 
-`tsconfig.json` (inside compiler options)
+`tsconfig.json`
 
 ### target
 
@@ -220,7 +221,7 @@ TODO
 
 Lib is used to set your own libraries / apis you want to use. By default, all of the targets functionality is imported, but as soon as lib is uncommented, you will have to specify what you want to use.
 
-``` json
+```json
 "lib": [
   "dom",
   "es6",
@@ -254,10 +255,11 @@ Sourcemap lets you debug TypeScript code in the browser rather than only being r
 
 In a typical TypeScript project you would have a `src` directory for `.ts` files and a `dist` directory for the compiled `.js` output files. outDir allows you to set the output directory of the `.js` files.
 
-``` json
+```json
 "outDir": "./dist",
 "rootDir": "./src"
 ```
+
 ### removeComments
 
 Pretty self-explanatory (removes comments from .js output)
@@ -282,3 +284,133 @@ true - will not generate
 ### strict
 
 When it is true you enable all of the strict type-checking options.
+
+## 5. Classes & Interfaces
+
+### Defining classes
+
+```TypeScript
+class Book {
+    title: string;
+
+    constructor(t: string) {
+      this.title = t;
+    }
+
+    // describes that 'this' should only ever be used in context of Document
+    print(this: Book) {
+      console.log(this.title);
+    }
+  }
+
+  const hello = new Book('hello');
+  hello.print(); // works
+  const helloCopy = { print: hello.print };
+  helloCopy.print(); // error
+```
+
+### Access modifiers
+
+```TypeScript
+class Book {
+  private employees: string[] = [];
+  public name: string;
+  private age: number;
+}
+```
+
+### Shorthand initialization
+
+Here the params create the class members and the access keyword defines how accessible they will be. Even though id is private it can still initially be assigned to from contructor.
+
+```TypeScript
+class Book {
+  private employees: string[] = [];
+  constructor(private id: string, public name: string) {}
+
+  print(this: Book) {
+    console.log(this.name);
+  }
+}
+```
+
+This is the same as:
+
+```TypeScript
+class Book {
+  private id: string;
+  public name: string;
+  private employees: string[] = [];
+  constructor(id: string, name: string) {
+    this.id = id;
+    this.name = name;
+  }
+
+  print(this: Book) {
+    console.log(this.name);
+  }
+}
+```
+
+### Readonly property
+
+`private readonly thing: string`
+
+readonly defines the variable as read only.
+
+### Interitance
+
+public properties are accessible from any instance.
+private properties cannot be accessed by child classes.
+protected properties can be accessed by child classes.
+
+### Abstract classes
+
+Tldr; you create abstract functions if you want to force classes that inherit from an abstract class to implement a certain function or define a certain property. This is useful if child classes should all have common properties.
+
+```TypeScript
+abstract class ParentClass {
+  constructor(protected hello: string) {
+    this.hello = hello;
+  }
+
+  abstract print(this: ParentClass): void;
+}
+
+class ChildClass extends ParentClass {
+  constructor() {
+    super("Hello, World!");
+  }
+  // does not have to exactly match the abstract function.
+  print(this: ChildClass): void {
+    console.log(this.hello);
+  }
+}
+
+let childClass = new ChildClass();
+childClass.print();
+```
+
+Properties can also be abstract.
+
+### Interfaces
+
+Describes the structure of an object.
+
+```TypeScript
+  interface IPerson {
+    name: string;
+    age: number;
+
+    greet(phrase: string): void;
+  }
+
+  let user1: IPerson;
+  user1 = {
+    name: 'Morgan',
+    age: 30,
+    greet(phrase: string) {
+      console.log(prase + ' ' + this.name);
+    }
+  }
+```
