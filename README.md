@@ -297,7 +297,7 @@ class Book {
       this.title = t;
     }
 
-    // describes that 'this' should only ever be used in context of Document
+    // describes that 'this' should only ever be used in context of Book
     print(this: Book) {
       console.log(this.title);
     }
@@ -358,11 +358,11 @@ class Book {
 
 readonly defines the variable as read only.
 
-### Interitance
+### Inheritance
 
 public properties are accessible from any instance.
-private properties cannot be accessed by child classes.
-protected properties can be accessed by child classes.
+private properties cannot be accessed by child classes/whatever.
+protected properties can be accessed by child classes/whatever.
 
 ### Abstract classes
 
@@ -395,9 +395,9 @@ Properties can also be abstract.
 
 ### Interfaces
 
-Describes the structure of an object. Used when you want to ensure that a class has certain functionality where every class that implements the interface has to implement that structure.
+Describes the structure of an object. Used when you want to ensure that a something has certain functionality where every thing that implements the interface has to implement that structure.
 
-You can only add `readonly` in an interface, not private or protected. If readonly is defined in the interface, any class that implements the interface even without defining readonly will still be readonly (for the affected member).
+You can only add `readonly` in an interface, not private or protected. If readonly is defined in the interface, anything that implements the interface even without defining readonly will still be readonly (for the affected member).
 
 ```TypeScript
   interface IPerson {
@@ -450,6 +450,24 @@ If an interface extends another, anything that implements the interface must imp
     readonly name: string;
     greet(phrase: string): void {
       console.log(phrase);
+    }
+  }
+```
+
+### Optional property in interface
+
+``` TypeScript
+  interface SomeInterface {
+    readonly name: string;
+    // question mark marks outputName as optional
+    outputName?: string;
+  }
+
+  // still valid
+  class SomeClass implements SomeInterface {
+    readonly name: string
+    constructor(name: string) {
+      this.name = name;
     }
   }
 ```
