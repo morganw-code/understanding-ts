@@ -395,11 +395,13 @@ Properties can also be abstract.
 
 ### Interfaces
 
-Describes the structure of an object.
+Describes the structure of an object. Used when you want to ensure that a class has certain functionality where every class that implements the interface has to implement that structure.
+
+You can only add `readonly` in an interface, not private or protected. If readonly is defined in the interface, any class that implements the interface even without defining readonly will still be readonly (for the affected member).
 
 ```TypeScript
   interface IPerson {
-    name: string;
+    readonly name: string;
     age: number;
 
     greet(phrase: string): void;
@@ -410,7 +412,44 @@ Describes the structure of an object.
     name: 'Morgan',
     age: 30,
     greet(phrase: string) {
-      console.log(prase + ' ' + this.name);
+      console.log(phrase + ' ' + this.name);
+    }
+  }
+
+  //
+
+  interface IDrawable {
+  name: string;
+  position: number | number;
+}
+
+class Note implements IDrawable {
+  name: string;
+  position: number | number;
+  constructor(name: string, position: number | number) {
+    this.name = name;
+    this.position = position;
+  }
+}
+```
+
+### Extending interfaces
+
+If an interface extends another, anything that implements the interface must implement all the requirements of both interfaces.
+
+``` TypeScript
+  interface INamed {
+    readonly name: string;
+  }
+
+  interface IGreetable extends INamed {
+    greet(phrase: string): void;
+  }
+
+  class SomeClass implements IGreetable {
+    readonly name: string;
+    greet(phrase: string): void {
+      console.log(phrase);
     }
   }
 ```

@@ -17,3 +17,17 @@ class ChildClass extends ParentClass {
 
 let childClass = new ChildClass();
 childClass.print();
+
+interface IDrawable {
+  name: string;
+  position: number | number;
+}
+
+class Note implements IDrawable {
+  name: string;
+  position: number | number;
+  constructor(name: string, position: number | number) {
+    this.name = name;
+    this.position = position;
+  }
+}
