@@ -31,3 +31,23 @@ class Note implements IDrawable {
     this.position = position;
   }
 }
+
+type Admin = {
+  name: string;
+  privileges: string[];
+};
+
+type Employee = {
+  name: string;
+  startDate: Date;
+}
+
+type ElevatedEmployee = Admin & Employee;
+// is the same as
+// interface ElevatedEmployee extends Employee, Admin {}
+
+const e1: ElevatedEmployee = {
+  name: 'Max',
+  privileges: ['create-server'],
+  startDate: new Date()
+};

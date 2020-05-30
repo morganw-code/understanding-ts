@@ -1,5 +1,5 @@
 # Understanding TypeScript Notes
-Notes taken from Maximilian Schwarzmüller's course.
+Notes taken from Maximilian Schwarzmüller's course with additions. (WIP)
 
 ## 2. TypeScript Basics & Basic Types
 
@@ -426,10 +426,10 @@ You can only add `readonly` in an interface, not private or protected. If readon
 
 class Note implements IDrawable {
   name: string;
-  position: number | number;
-  constructor(name: string, position: number | number) {
+  something: number | string;
+  constructor(name: string, something: number | string) {
     this.name = name;
-    this.position = position;
+    this.something = something;
   }
 }
 ```
@@ -471,4 +471,32 @@ If an interface extends another, anything that implements the interface must imp
       this.name = name;
     }
   }
+```
+
+### 6. Advanced Types
+
+#### Intersection Types
+
+Intersection types allow us to combine other types.
+
+``` TypeScript
+  type Admin = {
+    name: string;
+    privileges: string[];
+  };
+
+  type Employee = {
+    name: string;
+    startDate: Date;
+  }
+
+  type ElevatedEmployee = Admin & Employee;
+  // is the same as
+  // interface ElevatedEmployee extends Employee, Admin {}
+
+  const e1: ElevatedEmployee = {
+    name: 'Max',
+    privileges: ['create-server'],
+    startDate: new Date()
+  };
 ```
