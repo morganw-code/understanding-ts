@@ -1,4 +1,5 @@
-# Understanding TypeScript Notes - TypeScript in one hit!
+# Understanding TypeScript Notes
+Notes taken from Maximilian Schwarzmüller's course.
 
 ## 2. TypeScript Basics & Basic Types
 
