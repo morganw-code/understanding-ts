@@ -166,9 +166,11 @@ generateError('Hello, World!', 500);
 
 ## 3. The TypeScript Compiler (and its Configuration)
 
+`export PATH="$PATH:"$HOME/node_modules/typescript/bin""` (or where your node_modules directory is)
+
 ### TSC (TypeScriptCompiler) watch mode
 
-`npx tsc app.ts -w`
+`tsc app.ts -w`
 
 now tsc will compile typescript after every file change.
 
@@ -176,18 +178,18 @@ now tsc will compile typescript after every file change.
 
 if typescript project has not been initialized
 
-`npx tsc --init`
+`tsc --init`
 
 then when it is initalized
 
-`npx tsc` will compile all files
+`tsc` will compile all files
 
 ## Including & Excluding files
 
 (ts project must be initialized)
 `tsconfig.json`
 
-``` TypeScript
+``` json
   // before the closing brace (example)
   // ...
   // },
@@ -204,3 +206,79 @@ then when it is initalized
 
 ## Compilation Target
 
+`tsconfig.json` (inside compiler options)
+
+### target
+
+Value could be "es5" or "es6", etc
+
+### module
+
+TODO
+
+### lib
+
+Lib is used to set your own libraries / apis you want to use. By default, all of the targets functionality is imported, but as soon as lib is uncommented, you will have to specify what you want to use.
+
+``` json
+"lib": [
+  "dom",
+  "es6",
+  "dom.iterable",
+  "scripthost"
+]
+```
+
+### allowJs & checkJs
+
+Allow JS will compile all the JS libraries used
+Check JS will check the JS libraries used for errors
+
+Really only used if you want to not use TypeScript but make use of its features
+
+### jsx
+
+Something that helps with reactjs.
+
+### declaration & declarationMap
+
+Generates a manifest file that describes all the types in your project
+
+### sourceMap
+
+Helps with debugging and development. (this is cool!)
+
+Sourcemap lets you debug TypeScript code in the browser rather than only being restricted to seeing the compiled JavaScript code under sources in dev tools. Setting sourceMap to true generates .js.map files which are readable by the browser and .ts files should appear.
+
+### outDir & rootDir
+
+In a typical TypeScript project you would have a `src` directory for `.ts` files and a `dist` directory for the compiled `.js` output files. outDir allows you to set the output directory of the `.js` files.
+
+``` json
+"outDir": "./dist",
+"rootDir": "./src"
+```
+### removeComments
+
+Pretty self-explanatory (removes comments from .js output)
+
+### noEmit
+
+When set to true typescript will just check your files instead of actually compiling
+
+### downLevelIteration
+
+If you have loops and they start behaving differently than they should, downLevelIteration should be set to true. This results in more verbose `.js` output but may fix any issues.
+
+### noEmitOnError
+
+Forces compilation even if errors are present in code.
+
+```
+false - will generate
+true - will not generate
+```
+
+### strict
+
+When it is true you enable all of the strict type-checking options.
