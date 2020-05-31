@@ -557,7 +557,7 @@ useVehicle(v2);
 
 ### Discriminated Unions
 
-``` TypeScript
+```TypeScript
 
 interface Bird {
   type: 'bird';
@@ -590,7 +590,7 @@ function moveAnimal(animal: Animal) {
 
 When targeting elements, it is not always guaranteed that the element exists in the HTML document and TypeScript has no way of knowing either. Since the element could technically be null, appending '!' will override this safety. Still, without any type-casting, TypeScript does not know what type the element is, thus, you cannot call a method like `.value` on the default HTMLElement type. To get around this you need to be explicit about what type the variable is.
 
-``` TypeScript
+```TypeScript
   // is explicit
   const someElement = document.getElementById('user-input')! as HTMLInputElement;
   // or (but <SomeType> clashes with ReactJS, so the first option is preferred)
@@ -600,4 +600,51 @@ When targeting elements, it is not always guaranteed that the element exists in 
   // is not
   const someElement = document.getElementById('user-input')!;
   someElement.value = 'Hi'; // Error: Property 'value' does not exist on the type 'HTMLElement'
+```
+
+### Index Types
+
+Strings, numbers or symbols are allowed as a property
+
+```TypeScript
+  // [property name datatype]: value datatype
+  interface ErrorContainer {
+    [prop: string]: string;
+  }
+
+  const errorBag: ErrorContainer = {
+    // Both key and value are strings, so it is valid. A number can also be interpreted as a string, so a number key would be valid.
+    email: 'Not a valid email!',
+    username: 'Must start with a capital letter'
+  };
+```
+
+### Optional Chaining
+
+Used if you are not sure if a prop in a certain object is defined or not
+
+```TypeScript
+const fetchedUserData = {
+  id: `u1`,
+  name: 'Max',
+  job: { title: 'CEO', description: 'My own company' }
+}
+```
+
+Vanilla JS
+
+`console.log(fetchedUserData.job && fetchedUserData.job.title)`
+
+TS
+
+`console.log(fetchedUserData?.job?.title)`
+
+`??` operator checks if something is null or undefined. If userInput is null, storedData will get the value 'DEFAULT'. If userInput is not null or undefined storedData will store the value.
+
+Useful if you're not sure if a value will return null or undefined.
+
+### Nullish Coalescing
+``` TypeScript
+const userInput = null;
+const storedData = userInput ?? 'DEFAULT';
 ```
